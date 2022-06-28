@@ -1,0 +1,35 @@
+
+Install ubuntu 20.04 --> also called Falcon
+
+I have used Oracle VirtualBox 6.1. (settings advanced --> biderctional)
+					ie. for drag and drop from host to guest and vice versa
+				
+
+
+
+
+1. Install basic libraries
+
+--> sudo apt install build-essential autoconf automake libxmu-dev
+
+2. Installing Gcc , G++
+--> sudo apt install gcc-4.8 g++-4.8
+
+	it gives error saying no installation candidate.
+This is because ubuntu 20.4 has gcc > 7. but ns2 is old software (2011)
+it supports gcc 4.8 atmost
+
+-->	sudo nano /etc/apt/sources.list
+	Include the following line
+
+-->	deb http://in.archive.ubuntu.com/ubuntu bionic main universe
+
+Save that file then , else it gives --> Permission denied error
+
+--> sudo apt update
+ 
+Again try
+
+--> sudo apt install gcc-4.8 g++-4.8
+
+
