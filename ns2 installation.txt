@@ -6,6 +6,8 @@ I have used Oracle VirtualBox 6.1. (settings advanced --> biderctional)
 				
 
 
+To open explorer --> explorer.exe .
+
 
 
 1. Install basic libraries
@@ -31,5 +33,11 @@ Save that file then , else it gives --> Permission denied error
 Again try
 
 --> sudo apt install gcc-4.8 g++-4.8
+
+
+3.UNZIP the ns2 packages to home folder
+
+--> tar zxvf ns-allinone-2.35.tar.gz
+--> cd ns-allinone-2.35.tar.gz
 
 
