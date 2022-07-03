@@ -57,7 +57,7 @@ if u get % it means installation successful.
 
 Copy the path displayed in terminal to ./bashsrc
 
-save
+save the file
 
 RUNNING NS2
 -----------
