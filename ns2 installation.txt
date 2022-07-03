@@ -41,3 +41,32 @@ Again try
 --> cd ns-allinone-2.35.tar.gz
 
 
+4. Make the changes in Makelink.h files
+		change @cc@ --> gcc-4.8
+		change @cxx@ or @cpp@ --> g++-4.8
+		
+5. Do the installation
+--> sudo ./install \
+
+6. Verification 
+
+Type ns
+if u get % it means installation successful.
+
+6. Add Path variable.
+
+Copy the path displayed in terminal to ./bashsrc
+
+save
+
+
+
+
+
+RUNNING NS2
+-----------
+
+--> gedit example1.tcl
+// type the code
+--> ns example1.tcl
+
