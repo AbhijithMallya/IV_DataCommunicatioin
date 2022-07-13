@@ -1,0 +1,17 @@
+4SF20CI002 - ABHIJITH MALLYA
+
+PART 1
+======
+
+r 49.993733 1 0 ack 40 ------- 0 2.0 0.0 400 820 ---> last line of ack 
+
+The number of bytes transferred in 50 seconds = 400 Bytes
+
+Through put = packet_size * recv * 8.0  = 30 x 400 x 8 = 96000 s
+
+
+PART 2
+======
+
+
+

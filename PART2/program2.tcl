@@ -4,7 +4,7 @@
 #===================================
 #     Simulation parameters setup
 #===================================
-set val(stop)   10.0                         ;# time of simulation end
+set val(stop)   50                         ;# time of simulation end
 
 #===================================
 #        Initialization        
@@ -20,39 +20,64 @@ $ns trace-all $tracefile
 set namfile [open out.nam w]
 $ns namtrace-all $namfile
 
+#Open the TCP trace file
+set par [open param.tr w]
+ 
+
 #===================================
 #        Nodes Definition        
 #===================================
 #Create 3 nodes
 set n0 [$ns node]
 set n1 [$ns node]
-set n4 [$ns node]
+set n2 [$ns node]
 
 #===================================
 #        Links Definition        
 #===================================
 #Createlinks between nodes
-$ns duplex-link $n1 $n0 100.0Mb 50ms DropTail
-$ns queue-limit $n1 $n0 50
-$ns duplex-link $n1 $n4 0.1Mb 1ms DropTail
-$ns queue-limit $n1 $n4 50
-$ns duplex-link $n0 $n1 100.0Mb 10ms DropTail
+$ns duplex-link $n0 $n1 100.0Mb 50ms DropTail
 $ns queue-limit $n0 $n1 50
+$ns duplex-link $n1 $n2 0.1Mb 1ms DropTail
+$ns queue-limit $n1 $n2 10
 
 #Give node position (for NAM)
-$ns duplex-link-op $n1 $n0 orient left
-
-$ns duplex-link-op $n1 $n4 orient right
-$ns duplex-link-op $n0 $n1 orient right
+$ns duplex-link-op $n0 $n1 orient right-down
+$ns duplex-link-op $n1 $n2 orient right-up
 
 #===================================
 #        Agents Definition        
 #===================================
+#Setup a TCP/Reno connection
+
+set tcp [new Agent/TCP/Reno]
+set tcp0 [new Agent/TCP/Reno]
+$ns attach-agent $n0 $tcp0
+set sink1 [new Agent/TCPSink]
+$ns attach-agent $n2 $sink1
+$ns connect $tcp0 $sink1
+$tcp0 set packetSize_ 1500
+
 
 #===================================
 #        Applications Definition        
 #===================================
+#Setup a FTP Application over TCP/Reno connection
+set ftp0 [new Application/FTP]
+$ftp0 attach-agent $tcp0
+$ns at 0.5 "$ftp0 start"
+$ns at 50.5 "$ftp0 stop"
 
+$tcp attach $par
+$tcp trace cwnd_
+$tcp trace maxseq_
+$tcp trace rtt_
+$tcp trace dupacks_
+$tcp trace ack_
+$tcp trace ndatabytes_
+$tcp trace ndatapacks_
+$tcp trace nrexmit_
+$tcp trace nrexmitpack_
 #===================================
 #        Termination        
 #===================================

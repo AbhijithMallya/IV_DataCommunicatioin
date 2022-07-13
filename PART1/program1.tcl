@@ -4,7 +4,7 @@
 #===================================
 #     Simulation parameters setup
 #===================================
-set val(stop)   10.0                         ;# time of simulation end
+set val(stop)   50                         ;# time of simulation end
 
 #===================================
 #        Initialization        
@@ -24,36 +24,44 @@ $ns namtrace-all $namfile
 #        Nodes Definition        
 #===================================
 #Create 3 nodes
-set n3 [$ns node]
-set n4 [$ns node]
-set n5 [$ns node]
+set n0 [$ns node]
+set n1 [$ns node]
+set n2 [$ns node]
 
 #===================================
 #        Links Definition        
 #===================================
 #Createlinks between nodes
-$ns duplex-link $n3 $n4 100.0Mb 10ms DropTail
-$ns queue-limit $n3 $n4 50
-$ns duplex-link $n4 $n5 100.0Mb 50ms DropTail
-$ns queue-limit $n4 $n5 50
-$ns duplex-link $n4 $n5 100.0Mb 50ms DropTail
-$ns queue-limit $n4 $n5 50
-$ns duplex-link $n4 $n5 100.0Mb 50ms DropTail
-$ns queue-limit $n4 $n5 50
+$ns duplex-link $n0 $n1 100.0Mb 50ms DropTail
+$ns queue-limit $n0 $n1 30
+$ns duplex-link $n1 $n2 0.1Mb 1ms DropTail
+$ns queue-limit $n1 $n2 30
 
 #Give node position (for NAM)
-$ns duplex-link-op $n3 $n4 orient right
-$ns duplex-link-op $n4 $n5 orient right
-$ns duplex-link-op $n4 $n5 orient right
-$ns duplex-link-op $n4 $n5 orient right
+$ns duplex-link-op $n0 $n1 orient right-down
+$ns duplex-link-op $n1 $n2 orient right-up
 
 #===================================
 #        Agents Definition        
 #===================================
+#Setup a TCP/Reno connection
+set tcp0 [new Agent/TCP/Reno]
+$ns attach-agent $n0 $tcp0
+set sink1 [new Agent/TCPSink]
+$ns attach-agent $n2 $sink1
+$ns connect $tcp0 $sink1
+$tcp0 set packetSize_ 1500
+
 
 #===================================
 #        Applications Definition        
 #===================================
+#Setup a FTP Application over TCP/Reno connection
+set ftp0 [new Application/FTP]
+$ftp0 attach-agent $tcp0
+$ns at 0.5 "$ftp0 start"
+$ns at 50.5 "$ftp0 stop"
+
 
 #===================================
 #        Termination        
